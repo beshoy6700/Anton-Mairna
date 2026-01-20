@@ -11,21 +11,17 @@
   <meta name="theme-color" content="#c9a24d">
 
   <!-- Social Share Preview -->
-  
-  <!-- Open Graph (WhatsApp, Facebook, Messenger) -->
   <meta property="og:title" content="Anton & Marina | Holy Matrimony">
   <meta property="og:description"
     content="Join us in celebrating the Sacrament of Holy Matrimony – Sunday, January 25, 2026 at The Prince Tawadros Church.">
-  <meta property="og:image" content="https://beshoy6700.github.io/Anton-Mairna/preview.jpg">
+  <meta property="og:image" content="https://beshoy6700.github.io/Anton-Mairna/preview_wedding.jpg">
   <meta property="og:url" content="https://beshoy6700.github.io/Anton-Mairna/">
   <meta property="og:type" content="website">
-  
-  <!-- Twitter Card -->
+
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Anton & Marina | Holy Matrimony">
-  <meta name="twitter:description" content="Join us in celebrating the Sacrament of Holy Matrimony – January 25, 2026.">
-  <meta name="twitter:image" content="https://beshoy6700.github.io/Anton-Mairna/preview.jpg">
-
+  <meta name="twitter:description" content="Join us in celebrating the Holy Matrimony – January 25, 2026.">
+  <meta name="twitter:image" content="https://beshoy6700.github.io/Anton-Mairna/preview_wedding.jpg">
 
   <!-- Fonts -->
   <link
@@ -55,6 +51,9 @@
       font-family: 'Inter', sans-serif;
       color: var(--text);
       overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: pan-y;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     /* Animations */
@@ -76,39 +75,44 @@
     }
 
     .animate>*:nth-child(1) {
-      animation-delay: .2s;
+      animation-delay: .2s
     }
 
     .animate>*:nth-child(2) {
-      animation-delay: .4s;
+      animation-delay: .4s
     }
 
     .animate>*:nth-child(3) {
-      animation-delay: .6s;
+      animation-delay: .6s
     }
 
     .animate>*:nth-child(4) {
-      animation-delay: .8s;
+      animation-delay: .8s
     }
 
     .animate>*:nth-child(5) {
-      animation-delay: 1s;
+      animation-delay: 1s
     }
 
     .animate>*:nth-child(6) {
-      animation-delay: 1.2s;
+      animation-delay: 1.2s
     }
 
     /* Card */
     .card {
       width: 100%;
-      max-width: 480px;
+      max-width: min(480px, 92vw);
+      max-height: 92vh;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overscroll-behavior: contain;
       background:
         linear-gradient(180deg, rgba(201, 162, 77, .06), transparent),
         rgba(14, 12, 10, .85);
       backdrop-filter: blur(16px);
       border-radius: 34px;
-      padding: 40px 26px 46px;
+      padding: clamp(20px, 5vw, 40px) clamp(18px, 5vw, 26px);
       text-align: center;
       position: relative;
       box-shadow:
@@ -116,6 +120,11 @@
         inset 0 0 80px rgba(201, 162, 77, .05);
       border: 1px solid rgba(201, 162, 77, .25);
       animation: fadeUp 1.2s ease forwards;
+    }
+
+    .card::-webkit-scrollbar {
+      width: 0;
+      height: 0;
     }
 
     .lang {
@@ -147,9 +156,10 @@
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
     }
 
+    /* Photo */
     .frame {
-      width: 230px;
-      height: 285px;
+      width: clamp(180px, 55vw, 230px);
+      aspect-ratio: 4 / 5;
       margin: 0 auto 22px;
       border-radius: 120px;
       padding: 5px;
@@ -169,9 +179,10 @@
       transform: scale(1.02);
     }
 
+    /* Text */
     .names {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
       letter-spacing: 3px;
       margin: 10px 0 4px;
       background: linear-gradient(180deg, #f3e7c0, #c9a24d);
@@ -180,7 +191,7 @@
     }
 
     .subtitle {
-      font-size: .8rem;
+      font-size: clamp(.65rem, 2.5vw, .8rem);
       letter-spacing: 4px;
       text-transform: uppercase;
       color: var(--muted);
@@ -194,11 +205,13 @@
       font-size: .9rem;
     }
 
+    /* Countdown */
     .countdown {
       display: flex;
       justify-content: center;
       gap: 8px;
       margin: 22px 0;
+      flex-wrap: wrap;
     }
 
     .cd-box {
@@ -219,6 +232,7 @@
       color: var(--muted);
     }
 
+    /* Buttons */
     .actions {
       display: flex;
       justify-content: center;
@@ -243,11 +257,32 @@
       color: #111;
     }
 
+    /* Arabic */
     #ar {
       display: none;
       direction: rtl;
       font-family: 'IBM Plex Arabic', sans-serif;
     }
+
+    @media (max-height: 700px) {
+      .frame {
+        width: 160px;
+      }
+
+      .countdown {
+        margin: 14px 0;
+      }
+
+      .actions {
+        margin-top: 12px;
+      }
+    }
+    /* iOS Smooth Scroll Inertia */
+.card {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
   </style>
 </head>
 
@@ -326,49 +361,34 @@
     const btn = document.getElementById("langBtn");
     const sound = document.getElementById("weddingSound");
 
-    /* ================= SOUND CONTROL ================= */
+    /* ================= SOUND ================= */
 
-    sound.volume = 0;                 // start silent
+    sound.volume = 0;
     const TARGET_VOLUME = 0.15;
-    const FADE_DURATION = 2000;       // fade in duration
-    const START_DELAY = 2000;         // delay before start
+    const FADE_DURATION = 2000;
+    const START_DELAY = 2000;
 
     function fadeInAudio() {
       const steps = 40;
       const stepTime = FADE_DURATION / steps;
       const volumeStep = TARGET_VOLUME / steps;
-
       let current = 0;
 
       const fade = setInterval(() => {
         current++;
         sound.volume = Math.min(TARGET_VOLUME, sound.volume + volumeStep);
-
-        if (current >= steps) {
-          clearInterval(fade);
-          sound.volume = TARGET_VOLUME;
-        }
+        if (current >= steps) clearInterval(fade);
       }, stepTime);
     }
 
     function tryPlay() {
-      sound.play()
-        .then(() => fadeInAudio())
-        .catch(() => {
-          console.log("Autoplay blocked — waiting for user interaction");
-        });
+      sound.play().then(fadeInAudio).catch(() => { });
     }
 
-    // Try autoplay after delay
-    setTimeout(() => {
-      tryPlay();
-    }, START_DELAY);
+    setTimeout(tryPlay, START_DELAY);
 
-    // Fallback: first user click enables sound
     document.addEventListener("click", () => {
-      if (sound.paused) {
-        tryPlay();
-      }
+      if (sound.paused) tryPlay();
     }, { once: true });
 
     /* ================= LANGUAGE ================= */
@@ -398,10 +418,10 @@
         : ["DAYS", "HOURS", "MIN", "SEC"];
 
       el.innerHTML = `
-        <div class="cd-box"><strong>${d}</strong><span>${labels[0]}</span></div>
-        <div class="cd-box"><strong>${h}</strong><span>${labels[1]}</span></div>
-        <div class="cd-box"><strong>${m}</strong><span>${labels[2]}</span></div>
-        <div class="cd-box"><strong>${s}</strong><span>${labels[3]}</span></div>`;
+      <div class="cd-box"><strong>${d}</strong><span>${labels[0]}</span></div>
+      <div class="cd-box"><strong>${h}</strong><span>${labels[1]}</span></div>
+      <div class="cd-box"><strong>${m}</strong><span>${labels[2]}</span></div>
+      <div class="cd-box"><strong>${s}</strong><span>${labels[3]}</span></div>`;
     }
 
     function update() {
